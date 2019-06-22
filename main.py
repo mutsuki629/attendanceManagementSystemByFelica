@@ -1,3 +1,5 @@
+from module import nfc_reader
+
 def main():
     print('test')
 
