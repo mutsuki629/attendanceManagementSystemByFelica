@@ -5,12 +5,14 @@ from module import nfc_reader as nr
 from module import google_sheets as gs
 
 def on_connect(tag):
+    print('connect_card')
     dt_now = datetime.datetime.now()
     date = '{0}/{1}/{2}'.format(dt_now.year, dt_now.month, dt_now.day)
     time = '{0}:{1}:{2}'.format(dt_now.hour, dt_now.minute, dt_now.second)
 
 
     print(date, time, tag)
+    gs.appendSheets(value1=date, value2=time, value3=tag)
 
 def main():
     with nr.suica_reader() as sr:

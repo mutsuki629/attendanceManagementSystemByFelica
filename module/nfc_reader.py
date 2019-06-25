@@ -12,7 +12,7 @@ class suica_reader:
 
         self.TIME_cycle = 0.1 # Suica待ち受けの1サイクル秒
         self.TIME_interval = 0.01 # Suica待ち受けの反応インターバル
-        self.TIME_wait = 1 # タッチされてから次の待ち受けを開始するまで無効化する秒
+        self.TIME_wait = 2 # タッチされてから次の待ち受けを開始するまで無効化する秒
         self.TIME_iterations = int(self.TIME_cycle//self.TIME_interval)+1
 
         self.clf = nfc.ContactlessFrontend('usb')
