@@ -79,7 +79,7 @@ def test():
     with suica_reader() as sr:
         try:
             while True:
-                sr.connect(on_connect)
+                
 
                 time.sleep(sr.TIME_wait)
         except KeyboardInterrupt:
