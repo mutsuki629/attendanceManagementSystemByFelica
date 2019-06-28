@@ -3,9 +3,9 @@ import datetime
 
 from module import nfc_reader as nr
 from module import google_sheets as gs
-from module import ignore
+from module import ignore as ign
 
-ig = ignore()
+ig = ign.ignore()
 
 def on_connect(tag):
     print('connect_card')
