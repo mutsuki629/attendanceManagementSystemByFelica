@@ -16,6 +16,9 @@ def on_connect(tag):
     lst = (tag, time.time())
     if ig.check(lst):
         gs.appendSheets(value1=date, value2=tm, value3=tag)
+        print('detect.')
+    else:
+        print('err')
     ig.update(lst)
 
 def main():
