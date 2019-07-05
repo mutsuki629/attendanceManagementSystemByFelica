@@ -3,8 +3,8 @@ import pyaudio
 
 beepLoca = 'audio/click.wav'
 
-def beep():
-    wf = wave.open(beepLoca, "r")
+def beep(filename):
+    wf = wave.open(filename, "r")
     # ストリーム開始
     p = pyaudio.PyAudio()
     stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
