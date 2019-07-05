@@ -6,6 +6,7 @@ from module import nfc_reader as nr
 from module import google_sheets as gs
 from module import ignore as ign
 
+path = '/'
 file_success = 'audio/success.wav'
 file_error = 'audio/error.wav'
 
@@ -19,11 +20,11 @@ def on_connect(tag):
 
     lst = (tag, time.time())
     if ig.check(lst):
-        subprocess.call('aplay {0}'.format(file_success), shell=True)
+        subprocess.call('aplay {0}{1}'.format(path, file_success), shell=True)
         gs.appendSheets(value1=date, value2=tm, value3=tag)
         print('detect.')
     else:
-        subprocess.call('aplay {0}'.format(file_error), shell=True)
+        subprocess.call('aplay {0}{1}'.format(path, file_error), shell=True)
         print('err')
     ig.update(lst)
 
