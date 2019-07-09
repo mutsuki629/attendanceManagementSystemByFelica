@@ -39,7 +39,7 @@ def main():
                 sr.connect(on_connect, qu)
 
                 time.sleep(sr.TIME_wait)
-                if qu.exist() and time.time()<itv:
+                if qu.exist() and time.time()>itv:
                     qu.execute()
                     itv=time.time()+15
 

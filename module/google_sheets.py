@@ -13,6 +13,7 @@ def appendSheets(value1=None, value2=None, value3=None):
                 "value3": value3}
 
     ifttt_webhook(eventid, payload)
+    print(eventid, payload)
 
 # ここからスタート
 if __name__ == '__main__':
