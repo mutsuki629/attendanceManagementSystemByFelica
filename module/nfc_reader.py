@@ -59,7 +59,7 @@ class suica_reader:
             print('setTimeWait')
             print('TIME_wait = ', self.TIME_wait)
 
-    def connect(self, on_connect):
+    def connect(self, on_connect, arg=None):
         print('suica waiting...')
         while True:
             target_res = self.clf.sense(self.target_req_suica, iterations=self.TIME_iterations, interval=self.TIME_interval)
@@ -68,7 +68,7 @@ class suica_reader:
                 tag.sys = 3
 
                 idm = binascii.hexlify(tag.idm)
-                on_connect(idm)
+                on_connect(idm, arg)
                 break
 
 
