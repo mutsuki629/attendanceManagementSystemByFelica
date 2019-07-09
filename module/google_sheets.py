@@ -4,6 +4,7 @@ def ifttt_webhook(eventid, payload):
 
     url = "https://maker.ifttt.com/trigger/" + eventid + "/with/key/cO9Fnab5t3KimvSWjQERft"
     response = requests.post(url, data=payload)
+    print(response)
 
 def appendSheets(value1=None, value2=None, value3=None):
     eventid = 'attendance_event'
