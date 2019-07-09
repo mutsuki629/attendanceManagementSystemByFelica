@@ -47,5 +47,5 @@ def main():
             print('except: KeyboardInterrupt')
 
 if __name__=='__main__':
-    #main()
-    print(time.time())
+    main()
+    # print(time.time())
