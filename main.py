@@ -22,7 +22,7 @@ def on_connect(tag, qu):
     lst = (tag, time.time())
     if ig.check(lst):
         subprocess.call('aplay {0}{1}'.format(path, file_success), shell=True)
-        qu(gs.appendSheets, (date, tm, tag))
+        qu.append(gs.appendSheets, (date, tm, tag))
         # gs.appendSheets(value1=date, value2=tm, value3=tag)
         print('detect.')
     else:
