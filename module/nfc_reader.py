@@ -48,9 +48,9 @@ class suica_reader:
                                     interval=self.TIME_interval)
         if target_res is not None:
             tag = nfc.tag.activate_tt3(self.clf, target_res)
-                tag.sys = 3
-                idm = binascii.hexlify(tag.idm)
-                return(idm)
+            tag.sys = 3
+            idm = binascii.hexlify(tag.idm)
+            return(idm)
         return None
 
     def connect(self, on_connect):
