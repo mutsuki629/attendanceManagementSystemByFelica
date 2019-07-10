@@ -1,28 +1,24 @@
 import requests
 
-def ifttt_webhook(eventid, payload):
+IFTTT_URL = 'https://maker.ifttt.com/trigger/{0}/with/key/{1}'
 
-    url = "https://maker.ifttt.com/trigger/" + eventid + "/with/key/cO9Fnab5t3KimvSWjQERft"
+def ifttt_webhook(key, eventid, payload):
+    url = IFTTT_URL.format(eventid, key)
     response = requests.post(url, data=payload)
     print(response)
 
-def appendSheets(value1=None, value2=None, value3=None):
+def appendRow(key, value1=None, value2=None, value3=None):
     eventid = 'attendance_event'
     payload = {"value1": value1,
                 "value2": value2,
                 "value3": value3}
-
-    ifttt_webhook(eventid, payload)
+    ifttt_webhook(key, eventid, payload)
     print(eventid, payload)
 
-# ここからスタート
 if __name__ == '__main__':
-        print ("IFTTT連携開始")
+    date = '2019/06/11'
+    time = '19:50'
+    id = 'dhawa'
+    payload = (date, time, id)
 
-        date = '2019/06/11'
-        time = '19:50'
-        id = 'dhandhawou'
-
-        appendSheets(date, time, id)
-
-        print ("IFTTT連携終了")
+    appendRow('key', *payload)

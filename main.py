@@ -1,51 +1,98 @@
-import time
-import datetime
+from time import time
+from time import sleep
+from datetime import datetime
 import subprocess
+from queue import Queue
 
-from module import nfc_reader as nr
-from module import google_sheets as gs
-from module import ignore as ign
-from module import queue as que
+from module.nfc_reader import suica_reader
+from module import google_sheets as sheets
 
-path = '/'
-file_success = 'audio/success.wav'
-file_error = 'audio/error.wav'
+PATH = '/home/mitsu10shi/amsf'
+IFTTT_KEY = 'cO9Fnab5t3KimvSWjQERft'
+SEND_ITV = 15
 
-ig = ign.ignore()
+WAV_SUCCESS = '{0}/audio/success.wav'.format(PATH)
+WAV_ERROR = '{0}/audi/error.wav'.format(PATH)
 
-def on_connect(tag, qu):
-    print('connect_card')
-    dt_now = datetime.datetime.now()
-    date = '{0}/{1}/{2}'.format(dt_now.year, dt_now.month, dt_now.day)
-    tm = '{0}:{1}:{2}'.format(dt_now.hour, dt_now.minute, dt_now.second)
+ignore = {}
+req_queue = Queue()
 
-    lst = (tag, time.time())
-    if ig.check(lst):
-        subprocess.call('aplay {0}{1}'.format(path, file_success), shell=True)
-        qu.append(gs.appendSheets, (date, tm, tag))
-        # gs.appendSheets(value1=date, value2=tm, value3=tag)
-        print('detect.')
-    else:
-        subprocess.call('aplay {0}{1}'.format(path, file_error), shell=True)
+def on_connect(tag):
+    print('connect card')
+    idm = tag
+
+    if idm in ignore and ignore[idm]>time():
+        subprocess.call('asplay {0}'.format(WAV_ERROR), shell=True)
         print('err')
-    ig.update(lst)
+    else:
+        subprocess.call('asplay {0}'.format(WAV_SUCCESS), shell=True)
+        ignore[idm]=time()+300
+        print('detect')    
+
+        current = datetime.now()
+        cdate = '{0}/{1}/{2}'.format(current.year,
+                                    current.month,
+                                    current.day)
+        ctime = '{0}:{1}:{2}'.format(current.hour,
+                                    current.minute,
+                                    current.second)
+        
+        req_queue.put((idm, cdate, ctime))
+    
+def pushSheets(arg):
+    sheets.appendRow(IFTTT_KEY, *arg)
 
 def main():
-    with nr.suica_reader() as sr:
-        qu = que.queue()
-        itv = time.time()-30
+    with suica_reader() as sr:
+        connect_flag=0
+        connect_itv=time()
+        send_flag=0
+        send_itv=time()
         try:
             while True:
-                sr.connect(on_connect, qu)
+                if connect_flag==0:
+                    idm = sr.sense()
+                    if idm is not None:
+                        on_connect(idm)
+                        connect_flag=1
+                        connect_itv=time()+sr.TIME_wait
+                elif connect_itv<time():
+                    connect_flag=0
 
-                time.sleep(sr.TIME_wait)
-                if qu.exist() and time.time()>itv:
-                    qu.execute()
-                    itv=time.time()+15
+                if send_flag==0:
+                    if not req_queue.empty():
+                        pushSheets(req_queue.get())
+                        send_flag=1
+                        send_itv=time()+SEND_ITV
+                elif send_itv<time():
+                    send_flag=0
+                sleep(0.010)
 
         except KeyboardInterrupt:
             print('except: KeyboardInterrupt')
 
+
+def test1():
+    date = '2019/06/11'
+    time = '19:50'
+    idm = 'dahdowada'
+    paylaod = (date, time, idm)
+    sheets.appendRow(IFTTT_KEY, paylaod)
+
+def test2():
+    with suica_reader() as sr:
+        try:
+            while True:
+                sr.connect(on_connect)
+                sleep(sr.TIME_wait)
+        except KeyboardInterrupt:
+            print('except: KeyboardInterrupt')
+
+def test3():
+    d = {}
+    if '0' in d and d['0']<30:
+        print('a')
+
 if __name__=='__main__':
-    main()
-    # print(time.time())
+    def main()     
+
