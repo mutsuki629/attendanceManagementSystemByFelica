@@ -22,10 +22,10 @@ def on_connect(tag):
     idm = tag
 
     if idm in ignore and ignore[idm]>time():
-        subprocess.call('asplay {0}'.format(WAV_ERROR), shell=True)
+        subprocess.call('aplay {0}'.format(WAV_ERROR), shell=True)
         print('err')
     else:
-        subprocess.call('asplay {0}'.format(WAV_SUCCESS), shell=True)
+        subprocess.call('aplay {0}'.format(WAV_SUCCESS), shell=True)
         ignore[idm]=time()+300
         print('detect')    
 
