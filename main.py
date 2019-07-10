@@ -57,6 +57,7 @@ def main():
                         connect_flag=1
                         connect_itv=time()+sr.TIME_wait
                 elif connect_itv<time():
+                    print('suica waiting...')
                     connect_flag=0
 
                 if send_flag==0:
@@ -66,7 +67,7 @@ def main():
                         send_itv=time()+SEND_ITV
                 elif send_itv<time():
                     send_flag=0
-                sleep(0.010)
+                sleep(0.001)
 
         except KeyboardInterrupt:
             print('except: KeyboardInterrupt')
