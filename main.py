@@ -12,7 +12,7 @@ IFTTT_KEY = 'cO9Fnab5t3KimvSWjQERft'
 SEND_ITV = 15
 
 WAV_SUCCESS = '{0}/audio/success.wav'.format(PATH)
-WAV_ERROR = '{0}/audi/error.wav'.format(PATH)
+WAV_ERROR = '{0}/audio/error.wav'.format(PATH)
 
 ignore = {}
 req_queue = Queue()
@@ -48,6 +48,7 @@ def main():
         connect_itv=time()
         send_flag=0
         send_itv=time()
+        print('suica waiting...')
         try:
             while True:
                 if connect_flag==0:
